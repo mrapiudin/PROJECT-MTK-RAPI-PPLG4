@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kalkulator Bunga Tunggal dan Bunga Majemuk</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			--input-focus: #2d8cf0;
+			--font-color: #323232;
+			--font-color-sub: #666;
+			--bg-color: #fff;
+			--main-color: #323232;
+			--bg: #000;
+			--hover-bg: #ff90e8;
+			--input-focus: #2d8cf0;
+			--hover-text: #000;
+		}
+		
+		.container {
+			width: 50%;
+			margin: 40px auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+			border: 1px solid #ccc;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		.label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		.input {
+			width: 100%;
+			padding: 5px 10px;
+			margin-bottom: 20px;
+			width: 37.5rem;
+			height: 40px;
+			border-radius: 5px;
+			border: 2px solid var(--main-color);
+			background-color: var(--bg-color);
+			box-shadow: 4px 4px var(--main-color);
+			font-size: 15px;
+			font-weight: 600;
+			color: var(--font-color);
+			outline: none;
+		}
+
+		.input:focus {
+			border: 2px solid var(--input-focus);
+		}
+
+		.input-field {
+			width: 100%;
+			padding: 5px 10px;
+			margin-bottom: 20px;
+			width: 36rem;
+			height: 40px;
+			border-radius: 5px;
+			border: 2px solid var(--main-color);
+			background-color: var(--bg-color);
+			box-shadow: 4px 4px var(--main-color);
+			font-size: 15px;
+			font-weight: 600;
+			color: var(--font-color);
+			outline: none;
+		}
+
+		.input-field::placeholder {
+			color: var(--font-color-sub);
+			opacity: 0.8;
+		}
+
+		.input-field:focus {
+			border: 2px solid var(--input-focus);
+		}
+
+		.button {
+			color: #fff;
+			cursor: pointer;
+			border: 1px solid var(--bg);
+			border-radius: 4px;
+			padding: 0.8em 2em;
+			background: var(--bg);
+			transition: 0.2s;
+
+			
+		}
+
+		.button:hover {
+			color: #fff;
+			transform: translate(-0.25rem, -0.25rem);
+			background: var(--font-color-sub);
+			box-shadow: 0.25rem 0.25rem var(--bg);
+		}
+
+		.button:active {
+			transform: translate(0);
+			box-shadow: none;
+		}
+
+
+		.result {
+			margin-top: 20px;
+			font-size: 18px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2>Kalkulator Bunga Tunggal dan Bunga Majemuk</h2>
+		<form id="interest-form">
+			<label class="label" for="principal">Jumlah Pokok:</label>
+			  <input type="number" id="principal" class="input-field" required>
+			<label class="label" for="rate">Tingkat Bunga (dalam desimal):</label>
+			  <input type="number" id="rate" class="input-field" required>
+			<label class="label" for="time">Waktu:</label>
+			  <input type="number" id="time" class="input-field" required>
+			<label class="label-satuan" for="time-unit">Satuan Waktu:</label>
+			  <select id="time-unit" class="input" required>
+          <option value="hari">Hari</option>
+          <option value="bulan">Bulan</option>
+          <option value="triwulan">Triwulan</option>
+          <option value="caturwulan">Caturwulan</option>
+          <option value="semester">Semester</option>
+          <option value="tahun">Tahun</option>
+			  </select>
+			  <center>
+			<button class="button" id="calculate">Hitung</button>
+		</center>
+		</form>
+		<div class="result" id="result"></div>
+	</div>
+
+	<script>
+		const form = document.getElementById('interest-form');
+		const calculateButton = document.getElementById('calculate');
+
+		calculateButton.addEventListener('click', (e) => {
+			e.preventDefault(); // prevent the form from submitting
+			calculateInterest();
+		});
+
+		function calculateInterest() {
+			const principal = parseFloat(document.getElementById('principal').value);
+			const rate = parseFloat(document.getElementById('rate').value);
+			const time = parseFloat(document.getElementById('time').value);
+			const timeUnit = document.getElementById('time-unit').value;
+
+			let timeInYear;
+			switch (timeUnit) {
+				case 'hari':
+					timeInYear = time / 365;
+					break;
+				case 'bulan':
+					timeInYear = time / 12;
+					break;
+				case 'triwulan':
+					timeInYear = (time / 3);
+					break;
+				case 'caturwulan':
+					timeInYear = (time / 4);
+					break;
+				case 'semester':
+					timeInYear = (time / 6);
+					break;
+				case 'tahun':
+					timeInYear = time;
+					break;
+				default:
+					alert("Invalid time unit");
+					return;
+			}
+
+			const simpleInterest = principal * (rate/100) * timeInYear;
+			const compoundInterest = principal * Math.pow(1 + (rate /100), timeInYear) - principal;
+
+			document.getElementById('result').innerHTML = `<center>
+      <h1>HASIL :</h1>
+	<p>Bunga Tunggal: Rp. ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(simpleInterest)}</p>
+	<p>Bunga Majemuk: Rp. ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(compoundInterest)}</p>
+		</center>`;
+		}
+	</script>
+</body>
+</html>
+``
